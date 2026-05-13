@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Pineapple Ripeness Matters - Pineapple Ripeness Detection</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #eaf3af; /* Light background color */
+            color: #333; /* General text color for better readability */
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            background-color: #FFC300;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #101110;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            margin-left: auto; /* Pushes the menu links to the right */
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #010101;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffb300;
+        }
+
+        /* Right-aligned auth buttons */
+        .auth-links {
+            display: flex;
+            align-items: center;
+            margin-left: 1rem; /* Optional space between menu and auth links */
+        }
+
+        .auth-links a {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #FF4E50;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .auth-links a:hover {
+            background-color: #228B22;
+        }
+
+        /* Blog Post Content */
+        .blog-post {
+            padding: 50px;
+        }
+
+        .blog-post h1 {
+            font-size: 2.5rem;
+            color: #228B22;
+            margin-bottom: 20px;
+        }
+
+        .blog-post p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .blog-post img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #FFC300;
+            text-align: center;
+            padding: 1rem;
+            color: #228B22;
+            margin-top: 50px;
+        }
+
+        .blog-post p {
+            font-size: 1rem;
+        }
+
+        @media screen and (max-width: 480px) {
+            nav .logo {
+                font-size: 1.2rem;
+            }
+
+            nav ul li a {
+                font-size: 0.9rem;
+            }
+
+            .blog-post h1 {
+                font-size: 1.5rem;
+            }
+
+            .blog-post p {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Pineapple Ripeness Detection</div>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+        <div class="auth-links">
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+    </nav>
+
+    <!-- Full Blog Post Content -->
+    <div class="blog-post">
+        <h1>Why Pineapple Ripeness Matters: From Farm to Table</h1>
+        <img src="{{ url_for('static', filename='pine1.jpg') }}" alt="Why Pineapple Ripeness Matters">
+        <p>Stop me if you’ve heard this one before: you bring home a pineapple, excited to slice into it for a sweet, juicy snack—only to find it hard, sour, and underwhelming. Or worse, it’s too soft and overripe, leaving you with a mushy mess.</p>
+        
+        <!-- Continue with the rest of the blog content -->
+        <p>Getting pineapple ripeness just right is not only frustrating for consumers; it’s a huge challenge for farmers and retailers, too. For farmers, picking the perfect pineapple means maximising the fruit’s flavour and sweetness while ensuring it lasts long enough to make it through the supply chain. And for consumers, ripeness is the difference between a delicious treat and a wasted purchase.</p>
+        <p>That’s where understanding ripeness detection comes in. Through research and technological advancements, we can now offer better ways to accurately determine when pineapples are at their peak—saving time, reducing waste, and ensuring the best quality from farm to table.</p>
+        
+        <h2>The Challenge of Manual Ripeness Detection</h2>
+        <p>Traditionally, the ripeness of pineapples is judged by external factors like colour, smell, and feel. People check the skin’s yellowing, give it a squeeze, and even sniff the base. But this method is not foolproof. Different varieties of pineapples ripen differently, and the external appearance doesn’t always tell the whole story about what’s happening inside the fruit.</p>
+        
+        <h2>How Ripeness Impacts Taste, Texture, and Shelf Life</h2>
+        <p>The flavour of a pineapple depends heavily on its ripeness. As the fruit ripens, sugars develop, giving it the characteristic sweetness that people love. A perfectly ripe pineapple is juicy, sweet, and has the right amount of acidity for balance. Overripe pineapples, on the other hand, lose their firmness and become overly soft, sometimes even fermenting.</p>
+        
+        <h2>The Cost of Getting It Wrong: Waste and Losses</h2>
+        <p>When ripeness detection is off, both farmers and retailers can suffer significant losses. An under-ripe pineapple won’t satisfy consumers, leading to waste. Overripe fruit, if not sold quickly, will spoil, causing even more waste. The supply chain also suffers when fruit doesn’t make it to stores in peak condition.</p>
+
+        <h2>A Tech-Driven Solution: Pineapple Ripeness Detection Systems</h2>
+        <p>Technology is stepping in to solve this problem. Ripeness detection systems, powered by sensors, AI, and image processing, provide a more precise way to assess when pineapples are ready to be harvested. These systems can evaluate external factors like colour, but they also use non-invasive methods to assess internal quality, such as sugar content and firmness.</p>
+
+        <h2>Conclusion: From Farm to Table, Why We Need Better Ripeness Detection</h2>
+        <p>Ripeness matters, whether you're a farmer trying to maximise yield or a consumer looking for the perfect piece of fruit. Traditional methods for detecting ripeness often fall short, but new technologies are offering a better way forward. With ripeness detection systems, we can ensure that pineapples are picked at their peak, reducing waste, increasing efficiency, and delivering better-quality fruit from farm to table.</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pineapple Ripeness Detection. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

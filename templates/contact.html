@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Contact Us - Pineapple Ripeness Detection</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Language Switcher Styling */
+        .language-switcher {
+            background-color: #FF4E50;
+            padding: 10px 20px;
+            text-align: right;
+        }
+
+        .language-switcher button {
+            background-color: #FFC300;
+            border: none;
+            padding: 10px 20px;
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .language-switcher button:hover {
+            background-color: #228B22;
+            color: white;
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            background-color: #FFC300;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0a0b0a;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            margin-left: auto; /* Pushes the menu to the right */
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #080908;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffb300;
+        }
+
+        .auth-links {
+            margin-left: 20px; /* Adds space between the menu and the login/register buttons */
+        }
+
+        .auth-links a {
+            margin-left: 10px;
+            background-color: #FF4E50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            background-color: #228B22;
+        }
+
+        /* Contact Section Styling */
+        .contact-section {
+            padding: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            font-size: 3rem;
+            color: #060606;
+            margin-bottom: 1rem;
+        }
+
+        .contact-section p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Contact Form Styling */
+        .contact-form {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .contact-form input[type="submit"] {
+            background-color: #228B22;
+            color: rgba(255, 255, 255, 0.883);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form input[type="submit"]:hover {
+            background-color: #ffb300;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #FFC300;
+            text-align: center;
+            padding: 1rem;
+            color: #228B22;
+            margin-top: 50px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .contact-section h2 {
+                font-size: 2.5rem;
+            }
+
+            .contact-section p {
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            nav .logo {
+                font-size: 1.2rem;
+            }
+
+            nav ul li a {
+                font-size: 0.9rem;
+            }
+
+            .contact-section h2 {
+                font-size: 2rem;
+            }
+
+            .contact-section p {
+                font-size: 0.9rem;
+            }
+        }
+        footer {
+            background-color: #FFC300;
+            text-align: center;
+            padding: 1rem;
+            color: #228B22;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Language Switcher (Above the Nav Bar) -->
+    <div class="language-switcher">
+        <button id="english-btn">English</button>
+        <button id="sinhala-btn">සිංහල</button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Pineapple Ripeness Detection</div>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+        <div class="auth-links">
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+    </nav>
+
+    <!-- Contact Section -->
+    <div class="contact-section">
+        <h2 id="contact-title">Contact Us</h2>
+        <p id="contact-description">Have a question or want to get in touch with us? Fill out the form below, or reach us via email or phone.</p>
+
+        <div class="contact-form">
+            <form action="submit_contact.php" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required id="name-placeholder">
+                <input type="email" name="email" placeholder="Your Email" required id="email-placeholder">
+                <textarea name="message" rows="5" placeholder="Your Message" required id="message-placeholder"></textarea>
+                <input type="submit" value="Send Message" id="submit-btn">
+            </form>
+        </div>
+
+        <p style="margin-top: 20px;" id="contact-alternate">Or contact us at:</p>
+        <p id="contact-email">Email: <a href="mailto:info@pineappledetection.com">info@pineappleripenessdetection.com</a></p>
+     
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pineapple Ripeness Detection. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Language Switching -->
+    <script>
+        const englishBtn = document.getElementById('english-btn');
+        const sinhalaBtn = document.getElementById('sinhala-btn');
+
+        // Language data for English and Sinhala
+        const translations = {
+            en: {
+                contactTitle: "Contact Us",
+                contactDescription: "Have a question or want to get in touch with us? Fill out the form below, or reach us via email or phone.",
+                namePlaceholder: "Your Name",
+                emailPlaceholder: "Your Email",
+                messagePlaceholder: "Your Message",
+                submitBtn: "Send Message",
+                
+            },
+            si: {
+                contactTitle: "අපව අමතන්න",
+                contactDescription: "අපව අමතීමට, විමසීමට හෝ ප්‍රශ්න දක්වීමට අවශ්‍යද? පහත පෝරමය පුරවන්න, හෝ අපව ඊමේල් හෝ දුරකථනයෙන් සම්බන්ධ කරගන්න.",
+                namePlaceholder: "ඔබේ නම",
+                emailPlaceholder: "ඔබේ ඊමේල්",
+                messagePlaceholder: "ඔබේ පණිවිඩය",
+                submitBtn: "පණිවිඩය යවන්න",
+                
+            }
+        };
+
+        // Function to switch to English
+        englishBtn.addEventListener('click', () => {
+            document.getElementById('contact-title').textContent = translations.en.contactTitle;
+            document.getElementById('contact-description').textContent = translations.en.contactDescription;
+            document.getElementById('name-placeholder').placeholder = translations.en.namePlaceholder;
+            document.getElementById('email-placeholder').placeholder = translations.en.emailPlaceholder;
+            document.getElementById('message-placeholder').placeholder = translations.en.messagePlaceholder;
+            document.getElementById('submit-btn').value = translations.en.submitBtn;
+            document.getElementById('contact-alternate').textContent = translations.en.contactAlternate;
+            document.getElementById('contact-email').innerHTML = translations.en.contactEmail;
+            document.getElementById('contact-phone').textContent = translations.en.contactPhone;
+        });
+
+        // Function to switch to Sinhala
+        sinhalaBtn.addEventListener('click', () => {
+            document.getElementById('contact-title').textContent = translations.si.contactTitle;
+            document.getElementById('contact-description').textContent = translations.si.contactDescription;
+            document.getElementById('name-placeholder').placeholder = translations.si.namePlaceholder;
+            document.getElementById('email-placeholder').placeholder = translations.si.emailPlaceholder;
+            document.getElementById('message-placeholder').placeholder = translations.si.messagePlaceholder;
+            document.getElementById('submit-btn').value = translations.si.submitBtn;
+            document.getElementById('contact-alternate').textContent = translations.si.contactAlternate;
+            document.getElementById('contact-email').innerHTML = translations.si.contactEmail;
+            document.getElementById('contact-phone').textContent = translations.si.contactPhone;
+        });
+    </script>
+ <!-- Footer -->
+ <footer>
+    <p>&copy; 2024 Pineapple Ripeness Detection System</p>
+</footer>
+</body>
+</html>

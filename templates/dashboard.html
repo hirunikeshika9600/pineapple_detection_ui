@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Farming Dashboard - Pineapple Ripeness Detection System</title>
+    <style>
+        body {
+            background-color: #fff7d4; /* Matching the yellow background */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Navigation bar styling */
+        nav {
+            background-color: #FFC300;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #050605;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            margin-left: auto;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #040504;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffb300;
+        }
+
+        /* Auth links styling */
+        .auth-links {
+            margin-left: 10px;
+        }
+
+        .auth-links a {
+            background-color: #FF4E50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-links a:hover {
+            background-color: #228B22;
+        }
+
+        /* Auth section styling */
+        .auth-section {
+            background-color: #FFC300;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .auth-section h2 {
+            font-size: 2rem;
+            color: #0c0c0c;
+            margin-bottom: 20px;
+        }
+
+        .auth-section form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .auth-section input[type="submit"] {
+            background-color: #228B22;
+            color: white;
+            cursor: pointer;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+        .auth-section input[type="submit"]:hover {
+            background-color: #0d0d0c;
+        }
+
+        /* Add responsiveness for mobile */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            nav ul li {
+                margin-left: 1rem;
+            }
+            
+            .auth-section {
+                padding: 20px;
+                box-shadow: none;
+            }
+        }
+
+        .dashboard {
+            margin-top: 30px;
+        }
+
+        .dashboard h1 {
+            color: #000000; /* Red to match the theme */
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            font-family: Calibri (Body);
+        }
+        
+        .phase-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .phase-list li {
+            background-color: #FFC300;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status {
+            background-color: #228B22;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .input-form-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .input-form {
+            background-color: #FFC300;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            text-align: left;
+            position: relative;
+            transition: transform 0.3s ease;
+            margin-right: 50px;
+        }
+
+        .input-form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .input-form input[type="submit"] {
+            background-color: #228B22;
+            color: white;
+            cursor: pointer;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+        .input-form input[type="submit"]:hover {
+            background-color: #0d0d0c;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Adds shadow on hover */
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #228B22;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* New Plot Section */
+        .plot-section {
+            margin-top: 50px;
+        }
+
+        .plot-section h2 {
+            color: #000000;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .plot-section .plot-details {
+            background-color: #FFC300;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .plot-section .plot-details p {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 10px 0;
+        }
+  /* Your existing styles */
+        /* Additional styles for the schedule table */
+        .schedule-table {
+            margin: 30px auto;
+            width: 80%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .schedule-table th {
+            background-color: #228B22;
+            color: white;
+        }
+        .schedule-table td {
+            background-color: #fff7d4;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #228B22;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+     <!-- Navigation Bar -->
+     <nav>
+        <div class="logo">Pineapple Ripeness Detection</div>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>  
+        </ul>
+        </nav>
+    <div class="dashboard">
+        <h1>Welcome Farmer</h1>
+
+        <!-- Phase progress for the farming guide -->
+        <ul class="phase-list">
+            <li>Phase 1: Land Preparation <span class="status">Completed</span></li>
+            <li>Phase 2: Planting <span class="status">In Progress</span></li>
+            <li>Phase 3: Maintenance <span class="status">Pending</span></li>
+            <li>Phase 4: Harvesting <span class="status">Pending</span></li>
+            <li>Phase 5: Market Access <span class="status">Pending</span></li>
+        </ul>
+
+        <!-- Land size input form for plant distance calculation -->
+        <div class="input-form-wrapper fade-in">
+            <div class="input-form">
+                <h2>Enter Your Land Size</h2>
+                <form action="/calculate_plants" method="POST">
+                    <input type="number" name="land_size" placeholder="Enter your land size in square meters" required><br>
+                    <input type="submit" value="Get Number of Plants">
+                    <p>
+                </form>
+            </div>
+        </div>
+       
+
+        <!-- Plot section for showing the farmer's plot -->
+        <div class="plot-section">
+            <h2>Your Plotted Land</h2>
+        
+            {% if plot %}
+                <div class="plot-details">
+                    <p><strong>Plot Size:</strong> {{ plot.plot_size }} sq. meters</p>
+                    <p><strong>Planting Date:</strong> {{ plot.planting_date }}</p>
+                    {% if plot.ripeness_estimated %}
+                <p><strong>Estimated Ripeness:</strong> {{ plot.ripeness_estimated.strftime('%Y-%m-%d') }}</p>
+            {% else %}
+                <p><strong>Estimated Ripeness:</strong> Not yet calculated.</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No plot data available yet. Please register your land plot.</p>
+    {% endif %}
+            
+            <!-- Added a button to redirect to land plotting page -->
+            <a href="{{ url_for('plot_land') }}" class="back-btn">Plot Your Land</a>
+        </div>
+      
+    </div>
+    <table class="schedule-table">
+        <tr>
+            <th>Phase</th>
+            <th>Scheduled Date</th>
+        </tr>
+        {% if schedule %}
+            {% for phase, date in schedule.items() %}
+                <tr>
+                    <td>{{ phase }}</td>
+                    <td>{{ date.strftime('%d-%m-%Y') if date else "Date not set" }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="2">No schedule available. Please create a schedule for your plantation.</td>
+            </tr>
+        {% endif %}
+    </table>
+    <pre>{{ schedule }}</pre> <!-- Debugging: Remove this after confirming data -->
+
+    
+
+   
+</body>
+</html>

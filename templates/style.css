@@ -1,0 +1,92 @@
+body {
+    background-image: url('background\ images.jpg');
+    background-size: cover; /* Ensures the background image covers the whole page */
+    background-position: center; /* Centers the background image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+}
+
+
+.hero {
+    background-image: url('background\ images.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px; /* Set a height for the section */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white; /* Text color for contrast */
+}
+
+/* Blogs Page Content Styling */
+.blogs-section {
+    background-color: #fff7d4;
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Creates a 2x2 grid */
+    gap: 15px; /* Reduced gap between the blog boxes */
+}
+
+/* Blog Post Box Styling */
+.blog-post {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Softer shadow for compact design */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 300px; /* Set a fixed height for the boxes */
+}
+
+/* Blog Post Image */
+.blog-post img {
+    width: 100%;
+    height: 100px; /* Smaller image height */
+    object-fit: cover; /* Ensures the image covers the area nicely */
+    display: block;
+}
+
+/* Blog Post Content */
+.blog-post-content {
+    padding: 15px;
+    text-align: center;
+}
+
+/* Blog Post Title */
+.blog-post h3 {
+    font-size: 1.2rem; /* Smaller font size for title */
+    color: #228B22;
+    margin-bottom: 8px;
+}
+
+/* Blog Post Description */
+.blog-post p {
+    font-size: 0.9rem; /* Smaller font size for the description */
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Read More Link */
+.blog-post a {
+    text-decoration: none;
+    color: #ffb300;
+    font-weight: bold;
+}
+
+.blog-post a:hover {
+    color: #228B22;
+}
+
+/* Hover Effect */
+.blog-post:hover {
+    transform: translateY(-8px); /* Smaller movement on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow on hover */
+}
+
+/* Responsive Design for Small Screens */
+@media screen and (max-width: 768px) {
+    .blogs-section {
+        grid-template-columns: 1fr; /* Switch to one column for smaller screens */
+    }
+}

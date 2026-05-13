@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Pineapple Ripeness Detection System</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            color: #0c0c0c;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            background-color: #FFC300;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #050605;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #040504;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffb300;
+        }
+        .auth-links {
+            margin-left: auto;
+        }
+
+        .auth-links a {
+            margin-left: 10px;
+            background-color: #FF4E50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            background-color: #228B22;
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff7d4;
+        }
+
+        .hero {
+            background-color: #fff7d4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 50%;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s forwards;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            color: #050404;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #030303;
+            margin: 1rem 0;
+        }
+
+        .hero-content button {
+            background-color: #228B22;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .hero-content button:hover {
+            background-color: #0d0d0c;
+            transform: scale(1.1);
+        }
+
+        .hero img {
+            max-width: 40%;
+            height: auto;
+            animation: slideInRight 1s ease-out forwards;
+            opacity: 0;
+            transform: translateX(50px);
+            padding: 10px 20px;
+        }
+
+        @keyframes slideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        footer {
+            background-color: #FFC300;
+            text-align: center;
+            padding: 1rem;
+            color: #228B22;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        video, canvas {
+            display: block;
+            margin: 20px auto;
+            max-width: 80%;
+        }
+
+        #video-container {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        #capture-btn {
+            display: block;
+            margin: 10px auto;
+            padding: 10px 20px;
+            background-color: #228B22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #capture-btn:hover {
+            background-color: #0d0d0c;
+        }
+
+        .fixed-middle-image {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: auto;
+            height: 150px;
+            object-fit: cover;
+            padding: 10px 20px;
+        }
+
+        #result-display {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #FFC300;
+            color: #333;
+            font-weight: bold;
+            display: none;
+        }
+
+        /* Language Switcher Styling */
+        .language-switcher {
+            background-color: #FF4E50;
+            padding: 10px 20px;
+            text-align: right;
+        }
+
+        .language-switcher button {
+            background-color: #FFC300;
+            border: none;
+            padding: 10px 20px;
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .language-switcher button:hover {
+            background-color: #228B22;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button id="english-btn">English</button>
+        <button id="sinhala-btn">සිංහල</button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Pineapple Ripeness Detection</div>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>  
+        </ul>
+        
+        <div class="auth-links">
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+    </nav>
+    
+    <!-- Home Page Content -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1 id="hero-title">Pineapple Ripeness Detection</h1><br>
+            <p id="hero-description">Upload your image or use your webcam to detect the ripeness of pineapples using AI.</p>
+            <br><br>
+
+            <!-- Form for uploading image from local system -->
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button id="upload-btn">Upload and Scan</button>
+            </form>
+
+            <!-- Webcam Capture Section -->
+            <br>
+            <h2 id="webcam-title">Use Your Camera</h2>
+            <button id="start-webcam">Start Camera</button>
+
+            <div id="video-container">
+                <button id="capture-btn">Capture and Scan</button>
+                <video id="video" autoplay></video>
+            </div>
+
+            <!-- Hidden Canvas to capture image from webcam -->
+            <canvas id="canvas" style="display:none;"></canvas>
+
+            <!-- Detection Result Display -->
+            <div id="result-display">
+                <!-- Result will be displayed here -->
+            </div>
+        </div>
+        <img src="{{ url_for('static', filename='pineapple.jpeg') }}" class="fixed-bottom-image" alt="Pineapple Image">
+    </div>
+
+    <!-- JavaScript for webcam capture and language switching -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const videoContainer = document.getElementById('video-container');
+            const startWebcamBtn = document.getElementById('start-webcam');
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const captureBtn = document.getElementById('capture-btn');
+            const context = canvas.getContext('2d');
+            const resultDisplay = document.getElementById('result-display');
+
+            // Open the webcam when "Start Webcam" is clicked
+            startWebcamBtn.addEventListener('click', () => {
+                videoContainer.style.display = 'block';
+                navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
+                    .then(stream => {
+                        video.srcObject = stream;
+                    })
+                    .catch(err => {
+                        console.error("Error accessing webcam: ", err);
+                        alert("Unable to access your camera. Please check your browser settings.");
+                    });
+            });
+
+            // Capture the image and send it to the backend for detection
+            captureBtn.addEventListener('click', () => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Convert the captured image to a blob
+                canvas.toBlob(blob => {
+                    const formData = new FormData();
+                    formData.append('file', blob, 'webcam_capture.jpg');
+
+                    // Send the image to the Flask backend
+                    fetch('/upload_webcam', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Response from server:", data);
+
+                        if (data.detected_class === 'No detection') {
+                            alert('No detection made.');
+                        } else {
+                            window.location.href = `/result?file_path=${data.result_url}&detected_class=${data.detected_class}`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        resultDisplay.textContent = 'Error detecting the image.';
+                        resultDisplay.style.display = 'block'; // Show error in result display
+                    });
+                });
+            });
+
+            // Language Switcher
+            const englishBtn = document.getElementById('english-btn');
+            const sinhalaBtn = document.getElementById('sinhala-btn');
+
+            const translations = {
+                en: {
+                    heroTitle: "Pineapple Ripeness Detection",
+                    heroDescription: "Upload your image or use your webcam to detect the ripeness of pineapples using AI.",
+                    uploadBtn: "Upload and Scan",
+                    webcamTitle: "Use Your Camera",
+                },
+                si: {
+                    heroTitle: "අන්නාසි ඉදුණු බව හඳුනාගැනීමේ පද්ධතිය ",
+                    heroDescription: "AI භාවිතයෙන් අන්නාසි වල ඉදුණු බව හඳුනා ගැනීමට ඔබේ රූපය උඩුගත කරන්න හෝ ඔබේ වෙබ් කැමරාව භාවිතා කරන්න.",
+                    uploadBtn: "අප්ලෝඩ් කරන්න සහ පරීක්ෂා කරන්න",
+                    webcamTitle: "ඔබේ කැමරාව භාවිතා කරන්න",
+                }
+            };
+
+            englishBtn.addEventListener('click', () => {
+                document.getElementById('hero-title').textContent = translations.en.heroTitle;
+                document.getElementById('hero-description').textContent = translations.en.heroDescription;
+                document.getElementById('upload-btn').textContent = translations.en.uploadBtn;
+                document.getElementById('webcam-title').textContent = translations.en.webcamTitle;
+            });
+
+            sinhalaBtn.addEventListener('click', () => {
+                document.getElementById('hero-title').textContent = translations.si.heroTitle;
+                document.getElementById('hero-description').textContent = translations.si.heroDescription;
+                document.getElementById('upload-btn').textContent = translations.si.uploadBtn;
+                document.getElementById('webcam-title').textContent = translations.si.webcamTitle;
+            });
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pineapple Ripeness Detection System</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Planting Distance Recommendation</title>
+    <style>
+        body {
+            background-color: #fff7d4;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            padding: 50px;
+            color: #333;
+        }
+
+        .result-box {
+            background-color: #FFC300;
+            padding: 40px;
+            border-radius: 15px;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            margin: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .result-box:hover {
+            transform: scale(1.02);
+        }
+
+        .result-box h2 {
+            color: #050505;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .result-box p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .result-box strong {
+            font-size: 1.8rem;
+            color: #228B22;
+        }
+
+        .plant-icon {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .guidelines-box {
+            margin-top: 40px;
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .guidelines-box:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .guidelines-box h3 {
+            color: #FF4E50;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .guidelines-box ul {
+            font-size: 1.1rem;
+            color: #333;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .guidelines-box ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .guidelines-box ul li:before {
+            content: "🌱"; /* Plant icon */
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .guidelines-box p {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 15px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #228B22;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+       
+
+        .back-link:hover {
+            color: #FF4E50;
+        }
+
+        /* Optional animation */
+        .fade-in {
+            opacity: 0;
+            animation: fadeInAnimation 1s forwards;
+        }
+
+        @keyframes fadeInAnimation {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="result-box fade-in">
+        <img src="{{ url_for('static', filename='PineapplePlant.jpg') }}" alt="Plant Icon" class="plant-icon">
+        <h2>Planting Recommendation</h2>
+        
+        {% if total_plants %}
+        <p>Total number of plants you can fit on your land: <strong>{{ total_plants }}</strong></p>
+        {% endif %}
+        
+        <div class="guidelines-box fade-in">
+            <h3>General Planting Guidelines:</h3>
+            <ul>
+                <li>Distance between plants in a row: 25–30 cm (10–12 inches)</li>
+                <li>Distance between rows: 1 meter (3 feet)</li>
+            </ul>
+            <p>These spacings help ensure optimal growth by allowing sunlight, airflow, and space for each plant to thrive, improving yield quality and simplifying management like irrigation and pest control.</p>
+        </div>
+
+        <a href="/dashboard" class="back-btn">Back to Dashboard</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Webcam Capture - Pineapple Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            color: #FF4E50;
+        }
+
+        video, canvas {
+            margin: 20px auto;
+            width: 80%;
+            max-width: 640px;
+        }
+
+        #capture-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #228B22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        #capture-btn:hover {
+            background-color: #0d0d0c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Capture Pineapple Image</h1>
+
+    <!-- Webcam Video Feed -->
+    <video id="video" autoplay></video>
+
+    <!-- Canvas to hold the captured image -->
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <!-- Capture and Scan Button -->
+    <button id="capture-btn">Capture and Scan</button>
+
+    <!-- Script for Webcam and Capture -->
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const context = canvas.getContext('2d');
+
+        // Start the webcam video stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Error accessing webcam: ", err);
+            });
+
+        // Capture the image and send it to the backend for detection
+        captureBtn.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert the captured image to a blob
+            canvas.toBlob(blob => {
+                const formData = new FormData();
+                formData.append('file', blob, 'webcam_capture.jpg');
+
+                // Send the image to the Flask backend
+                fetch('/upload_webcam', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.detected_class) {
+                        // Redirect to the result page with the detected class and image path
+                        window.location.href = `/result?file_path=${data.result_url}&detected_class=${data.detected_class}`;
+                    } else {
+                        alert('No detection made.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+</body>
+</html>

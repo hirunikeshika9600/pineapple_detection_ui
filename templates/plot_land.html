@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Plot Your Land</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='leaflet/leaflet.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='leaflet_draw/dist/leaflet.draw.css') }}" />
+
+    <style>
+          /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding-top: 80px; /* Space for fixed navigation */
+            padding-bottom: 60px; /* Space for fixed footer */
+            margin: 0;
+        }
+
+        h1 {
+            color: #228B22;
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        /* Navigation bar styling */
+        nav {
+            background-color: #FFC300;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #050605;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #040504;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffb300;
+        }
+
+        /* Map styling */
+        #map {
+            height: 500px;
+            margin: 20px 0;
+        }
+
+        /* Back button styling */
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #228B22;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #FFC300;
+            text-align: center;
+            padding: 1rem;
+            color: #228B22;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        /* Add responsiveness for mobile */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+                padding-bottom: 70px;
+            }
+
+            nav ul li {
+                margin-left: 1rem;
+            }
+
+            .back-btn {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+      <!-- Navigation Bar -->
+      <nav>
+        <div class="logo">Pineapple Ripeness Detection</div>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>  
+        </ul>
+        </nav>
+        <br>
+    <h1>Plot Your Land for Pineapple Plantation</h1>
+
+    <!-- Map for land plotting -->
+    <div id="map"></div>
+
+    <div class="form-container">
+        <form action="/save_plot" method="POST">
+            <label for="plot_size">Plot Size (in sq meters):</label>
+            <input type="text" name="plot_size" id="plot_size" required>
+
+            <label for="planting_date">Planting Date:</label>
+            <input type="date" name="planting_date" id="planting_date" required>
+
+            <input type="hidden" name="plot_coordinates" id="plot_coordinates">
+            <input type="submit" value="Save Plot">
+        </form>
+    </div>
+
+    <!-- Include Leaflet.js and Leaflet Draw.js -->
+    <script src="{{ url_for('static', filename='leaflet/leaflet.js') }}"></script>
+    <script src="{{ url_for('static', filename='leaflet_draw/dist/leaflet.draw.js') }}"></script>
+
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([7.8731, 80.7718], 7);
+
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Layer for drawn shapes
+        var drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        // Add draw controls
+        var drawControl = new L.Control.Draw({
+            edit: {
+                featureGroup: drawnItems
+            },
+            draw: {
+                polygon: true,
+                marker: false,
+                polyline: false,
+                rectangle: false,
+                circle: false,
+                circlemarker: false
+            }
+        });
+        map.addControl(drawControl);
+
+        // Attempt to center map on user's current location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+
+                    // Set map view to user's location
+                    map.setView([lat, lng], 13);
+
+                    // Optional: Add marker at user's current location
+                    L.marker([lat, lng]).addTo(map).bindPopup("You are here").openPopup();
+                },
+                function (error) {
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            alert("Location access was denied. Please allow location access.");
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            alert("Location information is unavailable.");
+                            break;
+                        case error.TIMEOUT:
+                            alert("The request to get your location timed out.");
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            alert("An unknown error occurred while retrieving your location.");
+                            break;
+                    }
+                }
+            );
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+
+        // Capture the drawn polygon and send coordinates to the form
+        map.on(L.Draw.Event.CREATED, function (event) {
+            var layer = event.layer;
+            drawnItems.addLayer(layer);
+
+            // Capture polygon coordinates and set them in the hidden input
+            var coordinates = layer.toGeoJSON().geometry.coordinates;
+            document.getElementById('plot_coordinates').value = JSON.stringify(coordinates);
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pineapple Ripeness Detection System</p>
+    </footer>
+</div>
+
+<a href="/dashboard" class="back-btn">Back to Dashboard</a>
+</div>
+</body>
+</html>

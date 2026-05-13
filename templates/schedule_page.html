@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Schedule Your Plantation</title>
+    <style>
+         body {
+            background-color: #fff7d4; /* Matching the yellow background */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+         /* Navigation bar styling */
+         nav {
+            background-color: #FFC300;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #050605;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: flex-end;
+            flex-grow: 1;
+            margin-left: auto;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #040504;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffb300;
+        }
+
+        /* Auth links styling */
+        .auth-links {
+            margin-left: 10px;
+        }
+
+        .auth-links a {
+            background-color: #FF4E50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-links a:hover {
+            background-color: #228B22;
+        }
+
+        /* Auth section styling */
+        .auth-section {
+            background-color: #FFC300;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .auth-section h2 {
+            font-size: 2rem;
+            color: #0c0c0c;
+            margin-bottom: 20px;
+        }
+
+        .auth-section form input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        .auth-section input[type="submit"] {
+            background-color: #228B22;
+            color: white;
+            cursor: pointer;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+        .auth-section input[type="submit"]:hover {
+            background-color: #0d0d0c;
+        }
+
+        /* Add responsiveness for mobile */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            nav ul li {
+                margin-left: 1rem;
+            }
+            
+            .auth-section {
+                padding: 20px;
+                box-shadow: none;
+            }
+        }
+
+        .schedule-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .schedule-form input[type="date"],
+        .schedule-form input[type="submit"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .schedule-form input[type="submit"] {
+            background-color: #228B22;
+            color: white;
+            cursor: pointer;
+        }
+
+        .schedule-form input[type="submit"]:hover {
+            background-color: #196619;
+        }
+        /* Your existing styles */
+        /* Additional styles for the schedule table */
+        .schedule-table {
+            margin: 30px auto;
+            width: 80%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .schedule-table th {
+            background-color: #228B22;
+            color: white;
+        }
+        .schedule-table td {
+            background-color: #fff7d4;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #228B22;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        footer {
+            background-color: #FFC300;
+            text-align: center;
+            padding: 1rem;
+            color: #228B22;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+
+    </style>
+</head>
+<body>
+       <!-- Navigation Bar -->
+       <nav>
+        <div class="logo">Pineapple Ripeness Detection</div>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>  
+        </ul>
+        </nav>
+        <h2>Plantation Schedule</h2>
+        <table>
+            <tr><th>Event</th><th>Date</th></tr>
+            {% for event, date in schedule.items() %}
+            <tr><td>{{ event }}</td><td>{{ date }}</td></tr>
+            {% endfor %}
+        </table>
+        
+</div>
+
+<a href="/dashboard" class="back-btn">Back to Dashboard</a>
+</div>
+ <!-- Footer -->
+ <footer>
+    <p>&copy; 2024 Pineapple Ripeness Detection System</p>
+</footer>
+
+</body>
+</html>

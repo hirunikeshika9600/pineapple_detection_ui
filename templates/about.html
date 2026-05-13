@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>About Us - Pineapple Ripeness Detection</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Language Switcher Styling (placed above the nav bar) */
+        .language-switcher {
+            background-color: #FF4E50;
+            padding: 10px 20px;
+            text-align: right;
+        }
+
+        .language-switcher button {
+            background-color: #FFC300;
+            border: none;
+            padding: 10px 20px;
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .language-switcher button:hover {
+            background-color: #228B22;
+            color: white;
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            background-color: #FFC300;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        nav .nav-right {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #216421;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffb300;
+        }
+
+        .auth-links a {
+            margin-left: 10px;
+            background-color: #FF4E50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            background-color: #228B22;
+        }
+
+        /* Page Content Styling */
+        .about-section {
+            padding: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 300px;
+        }
+
+        .about-section h2 {
+            font-size: 3rem;
+            color: #396730;
+            margin-bottom: 1rem;
+        }
+
+        .about-section p, .about-section h3 {
+            max-width: 800px;
+            font-size: 1.2rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #FFC300;
+            text-align: center;
+            padding: 1rem;
+            color: #228B22;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .about-section h2 {
+                font-size: 2.5rem;
+            }
+
+            .about-section p, .about-section h3 {
+                font-size: 1rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .about-section h2 {
+                font-size: 2rem;
+            }
+
+            .about-section p, .about-section h3 {
+                font-size: 0.9rem;
+            }
+
+            nav .logo {
+                font-size: 1.2rem;
+            }
+
+            nav ul li a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Language Switcher (Above the Nav Bar) -->
+    <div class="language-switcher">
+        <button id="english-btn">English</button>
+        <button id="sinhala-btn">සිංහල</button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Pineapple Ripeness Detection</div>
+        <div class="nav-right">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+                <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            </ul>
+            <div class="auth-links">
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <div class="about-section">
+        <div>
+            <h2 id="about-title">About Pineapple Ripeness Detection</h2>
+            <p id="about-description">
+                Our Pineapple Ripeness Detection System is an innovative solution designed to help farmers and suppliers determine the optimal ripeness of Mauritius pineapples with accuracy and efficiency. By using advanced image processing and machine learning techniques, our system improves harvest timing and reduces post-harvest losses, leading to better-quality produce and increased profitability.
+            </p>
+
+            <h3>Benefits of Using Our System</h3>
+            <p><strong>Accurate Harvest Timing:</strong> The system helps farmers pick pineapples at their peak ripeness, ensuring optimal flavor and quality.</p>
+            <p><strong>Reduced Post-Harvest Losses:</strong> By accurately determining ripeness, farmers can reduce losses caused by under- or overripe fruits.</p>
+            <p><strong>Increased Productivity:</strong> Automated detection saves time and effort, enabling farmers to focus on other important aspects of farming.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pineapple Ripeness Detection. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Language Switching -->
+    <script>
+        const englishBtn = document.getElementById('english-btn');
+        const sinhalaBtn = document.getElementById('sinhala-btn');
+
+        // Language data for English and Sinhala
+        const translations = {
+            en: {
+                title: "About Pineapple Detection System",
+                description: "Our Pineapple Detection System is an innovative AI-powered platform that allows users to easily detect and analyze the ripeness of pineapples. Using cutting-edge computer vision and AI algorithms, we help farmers, retailers, and consumers make smarter decisions when it comes to selecting the perfect pineapple."
+            },
+            si: {
+                title: "පයිනැප්ල් හඳුනාගැනීමේ පද්ධතිය ගැන",
+                description: "පයිනැප්ල් හඳුනාගැනීමේ පද්ධතිය යනු පයිනැප්ල්වල රිප්නස් හඳුනාගැනීම සහ විශ්ලේෂණය කිරීමට පරිශීලකයින්ට පහසුවෙන් ඉඩ සලසන නව්‍ය AI-සම්භාව්‍ය වේදිකාවකි."
+            }
+        };
+
+        // Function to switch to English
+        englishBtn.addEventListener('click', () => {
+            document.getElementById('about-title').textContent = translations.en.title;
+            document.getElementById('about-description').textContent = translations.en.description;
+        });
+
+        // Function to switch to Sinhala
+        sinhalaBtn.addEventListener('click', () => {
+            document.getElementById('about-title').textContent = translations.si.title;
+            document.getElementById('about-description').textContent = translations.si.description;
+        });
+    </script>
+
+</body>
+</html>

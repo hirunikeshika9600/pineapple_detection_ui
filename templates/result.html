@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Detection Result</title>
+    <!-- Google Font for Better Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Overlay */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay to enhance the content visibility */
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 1s ease-in-out;
+            z-index: 1;
+        }
+
+        .container h1 {
+            font-size: 2.5rem;
+            color: #FF4E50;
+            margin-bottom: 30px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        img {
+            max-width: 70%;
+            border-radius: 15px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        img:hover {
+            transform: scale(1.1); /* Slight zoom effect on hover */
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+        }
+
+        .result {
+            margin: 20px 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .result strong {
+            color: #FF4E50;
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 40px;
+            background-color: #f8b523;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(255, 78, 80, 0.4);
+        }
+
+        a:hover {
+            background-color: #F9D423;
+            color: #333;
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 6px 16px rgba(255, 78, 80, 0.5); /* Lift shadow */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Language switcher styling */
+        .language-switcher {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .language-switcher button {
+            padding: 10px 20px;
+            background-color: #FF4E50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Switcher -->
+    <div class="language-switcher">
+        <button id="english-btn">English</button>
+        <button id="sinhala-btn">සිංහල</button>
+    </div>
+
+    <div class="container">
+        <h1 id="title">Detection Result</h1>
+        <img id="detected-img" src="{{ url_for('static', filename='uploads/' + file_path.split('/')[-1]) }}" alt="Detected Image">
+        
+        <div class="result">
+            Detected Stage: <strong id="detected-stage">{{ detected_class }}</strong>
+        </div>
+        <a href="/" id="back-btn">Go Back</a>
+    </div>
+
+    <!-- JavaScript for Language Switching -->
+    <script>
+        const englishBtn = document.getElementById('english-btn');
+        const sinhalaBtn = document.getElementById('sinhala-btn');
+
+        // Language data for English and Sinhala
+        const translations = {
+            en: {
+                title: "Detection Result",
+                detectedStage: "Detected Stage",
+                back: "Go Back"
+            },
+            si: {
+                title: "හඳුනාගත් ප්‍රතිඵලය",
+                detectedStage: "හඳුනාගත් අවස්ථාව",
+                back: "ආපසු යන්න"
+            }
+        };
+
+        // Function to switch to English
+        englishBtn.addEventListener('click', () => {
+            document.getElementById('title').textContent = translations.en.title;
+            document.querySelector('.result strong').textContent = translations.en.detectedStage + ": " + "{{ detected_class }}";
+            document.getElementById('back-btn').textContent = translations.en.back;
+        });
+
+        // Function to switch to Sinhala
+        sinhalaBtn.addEventListener('click', () => {
+            document.getElementById('title').textContent = translations.si.title;
+            document.querySelector('.result strong').textContent = translations.si.detectedStage + ": " + "{{ detected_class }}";
+            document.getElementById('back-btn').textContent = translations.si.back;
+        });
+    </script>
+</body>
+</html>

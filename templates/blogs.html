@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Blogs - Pineapple Ripeness Detection</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Language Switcher Styling (placed above the nav bar) */
+        .language-switcher {
+            background-color: #FF4E50;
+            padding: 10px 20px;
+            text-align: right;
+        }
+
+        .language-switcher button {
+            background-color: #FFC300;
+            border: none;
+            padding: 10px 20px;
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .language-switcher button:hover {
+            background-color: #228B22;
+            color: white;
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            background-color: #FFC300;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #101110;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            margin-left: auto; /* Pushes the menu to the right */
+        }
+
+        nav ul li {
+            margin-left: 2rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #010101;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ffb300;
+        }
+
+        .auth-links {
+            margin-left: 10px;
+        }
+
+        .auth-links a {
+            background-color: #FF4E50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .auth-links a:hover {
+            background-color: #228B22;
+        }
+
+        /* Blogs Page Content */
+        .blogs-section {
+            padding: 50px;
+        }
+
+        .blog-post {
+            background-color: rgb(246, 248, 188);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: auto; /* Allow the height to adjust based on content */
+        }
+
+        .blog-post h3 {
+            font-size: 2rem;
+            color: #228B22;
+            margin-bottom: 10px;
+        }
+
+        .blog-post p {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .blog-post img {
+            width: 100%;  /* Make the image take up the full width */
+            max-height: 200px; /* Set a maximum height */
+            object-fit: cover; /* Ensure the image covers the container without distortion */
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .blog-post strong {
+            color: #228B22;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #FFC300;
+            text-align: center;
+            padding: 1rem;
+            color: #228B22;
+            margin-top: 50px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .blog-post h3 {
+                font-size: 1.5rem;
+            }
+
+            .blog-post p {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            nav .logo {
+                font-size: 1.2rem;
+            }
+
+            nav ul li a {
+                font-size: 0.9rem;
+            }
+
+            .blog-post h3 {
+                font-size: 1.2rem;
+            }
+
+            .blog-post p {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Language Switcher (Above the Nav Bar) -->
+    <div class="language-switcher">
+        <button id="english-btn">English</button>
+        <button id="sinhala-btn">සිංහල</button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">Pineapple Ripeness Detection</div>
+        <ul>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+        <div class="auth-links">
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        </div>
+    </nav>
+
+    <!-- Blogs Section -->
+    <div class="blogs-section">
+        <!-- Blog Post 1 -->
+        <div class="blog-post">
+            <img src="{{ url_for('static', filename='Pineapple3.jpg') }}" alt="Why Pineapple Ripeness Matters">  
+            <h3 id="blog1-title">Why Pineapple Ripeness Matters: From Farm to Table</h3>
+            <p id="blog1-description">
+                Getting pineapple ripeness just right is a challenge for both farmers and consumers. Learn how accurate ripeness detection improves quality, reduces waste, and benefits the entire supply chain.
+            </p>
+            <a href="{{ url_for('blog1') }}">Read More</a>
+        </div>
+
+        <!-- Blog Post 2 -->
+        <div class="blog-post">
+            <img src="{{ url_for('static', filename='ai-pineapple.jpg') }}" alt="AI Pineapple Detection">
+            <h3 id="blog2-title">How AI and Image Processing Are Revolutionising Pineapple Ripeness Detection</h3>
+            <p id="blog2-description">
+                Imagine being able to tell exactly when a pineapple is perfectly ripe, not by guessing based on colour or touch, but through precise data from an advanced AI system.
+            </p>
+        </div>
+
+        <!-- Blog Post 3 -->
+        <div class="blog-post">
+            <img src="science-pineapple.jpg" alt="The Science Behind Pineapple Ripeness">
+            <h3 id="blog3-title">The Science Behind Pineapple Ripeness: Colour, Texture, and Sweetness</h3>
+            <p id="blog3-description">
+                Picking the perfect pineapple is both an art and a science. While many people rely on colour and texture to guess at ripeness, there’s a lot more going on beneath the surface.
+            </p>
+        </div>
+
+        <!-- Blog Post 4 -->
+        <div class="blog-post">
+            <img src="smart-farming.jpg" alt="The Future of Agriculture: Smart Farming">
+            <h3 id="blog4-title">The Future of Agriculture: Smart Farming with Ripeness Detection Systems</h3>
+            <p id="blog4-description">
+                In today’s world, technology is changing the way we do just about everything, and agriculture is no exception.
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pineapple Ripeness Detection. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Language Switching -->
+    <script>
+        const englishBtn = document.getElementById('english-btn');
+        const sinhalaBtn = document.getElementById('sinhala-btn');
+
+        // Language data for English and Sinhala
+        const translations = {
+            en: {
+                blog1Title: "Why Pineapple Ripeness Matters: From Farm to Table",
+                blog1Description: "Getting pineapple ripeness just right is a challenge for both farmers and consumers. Learn how accurate ripeness detection improves quality, reduces waste, and benefits the entire supply chain.",
+                blog2Title: "How AI and Image Processing Are Revolutionising Pineapple Ripeness Detection",
+                blog2Description: "Imagine being able to tell exactly when a pineapple is perfectly ripe, not by guessing based on colour or touch, but through precise data from an advanced AI system.",
+                blog3Title: "The Science Behind Pineapple Ripeness: Colour, Texture, and Sweetness",
+                blog3Description: "Picking the perfect pineapple is both an art and a science. While many people rely on colour and texture to guess at ripeness, there’s a lot more going on beneath the surface.",
+                blog4Title: "The Future of Agriculture: Smart Farming with Ripeness Detection Systems",
+                blog4Description: "In today’s world, technology is changing the way we do just about everything, and agriculture is no exception."
+            },
+            si: {
+                blog1Title: "පයිනැප්ල් රිප්නස් වැදගත්කම: වගාකරුවන් සිට අත්දැකීමේ වගා ක්ෂේත්‍රය දක්වා",
+                blog1Description: "පයිනැප්ල්වල රිප්නස් නිවැරදි ලෙස ලබා ගැනීම වගාකරුවන් සහ පාරිභෝගිකයින් දෙපාර්ශවයම සඳහා අභියෝගයකි. ගුණාත්මකභාවය වැඩි දියුණු කරමින්, අපද්‍රව්‍ය අඩු කරමින්, සහ සැපයුම් බලවේගය සඳහා ප්‍රයෝජන සපයන පයිනැප්ල්වල රිප්නස් හඳුනා ගැනීම කෙසේද යන්න කෙටියෙන් ඉගෙන ගන්න.",
+                blog2Title: "AI සහ රූප සැකසුම පයිනැප්ල්වල රිප්නස් හඳුනා ගැනීමේ ක්‍රමවේදවල විප්ලවයක් සිදු කරයි",
+                blog2Description: "එකට පයිනැප්ල්වල පූර්ණ නිරවද්‍යතාවයකින් හඳුනාගත හැකි වනුයේ තෝරා ගන්නේ කෙලින්ම රිප්නස් දේ නොව සංකේතමය තොරතුරු දක්වා.",
+                blog3Title: "පයිනැප්ල්වල රිප්නස් විද්‍යාව: වර්ණය, වියළි බව සහ මීකිරි බව",
+                blog3Description: "පයිනැප්ල් පිරික්සුම අවංක ලෙස අධ්‍යයනය කිරීමකි.",
+                blog4Title: "කෘෂිකාර්මික ක්ෂේත්‍රයේ අනාගතය: ස්මාර්ට් වගාව සහ රිප්නස් හඳුනා ගැනීමේ ක්‍රමවේද",
+                blog4Description: "අපේ වර්තමාන තත්ත්වය කෘෂිකාර්මික ක්ෂේත්‍රයේ විශාල වෙනස්වීම් වලට ලක්වන අවස්ථාවකි."
+            }
+        };
+
+        // Function to switch to English
+        englishBtn.addEventListener('click', () => {
+            document.getElementById('blog1-title').textContent = translations.en.blog1Title;
+            document.getElementById('blog1-description').textContent = translations.en.blog1Description;
+            document.getElementById('blog2-title').textContent = translations.en.blog2Title;
+            document.getElementById('blog2-description').textContent = translations.en.blog2Description;
+            document.getElementById('blog3-title').textContent = translations.en.blog3Title;
+            document.getElementById('blog3-description').textContent = translations.en.blog3Description;
+            document.getElementById('blog4-title').textContent = translations.en.blog4Title;
+            document.getElementById('blog4-description').textContent = translations.en.blog4Description;
+        });
+
+        // Function to switch to Sinhala
+        sinhalaBtn.addEventListener('click', () => {
+            document.getElementById('blog1-title').textContent = translations.si.blog1Title;
+            document.getElementById('blog1-description').textContent = translations.si.blog1Description;
+            document.getElementById('blog2-title').textContent = translations.si.blog2Title;
+            document.getElementById('blog2-description').textContent = translations.si.blog2Description;
+            document.getElementById('blog3-title').textContent = translations.si.blog3Title;
+            document.getElementById('blog3-description').textContent = translations.si.blog3Description;
+            document.getElementById('blog4-title').textContent = translations.si.blog4Title;
+            document.getElementById('blog4-description').textContent = translations.si.blog4Description;
+        });
+    </script>
+
+</body>
+</html>
