@@ -1,10 +1,11 @@
-Flask
+flask
 gunicorn
-Flask-SQLAlchemy
-SQLAlchemy
-Flask-Migrate
-opencv-python
 ultralytics
+opencv-python
 python-dotenv
+numpy==1.26.4
+Flask-SQLAlchemy
+Flask-Migrate
+Werkzeug
 Pillow
-numpy
+psycopg2-binary
